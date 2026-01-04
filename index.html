@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<!-- Add this RIGHT AFTER <body> tag -->
+<div id="login-overlay" style="display: none;">
+    <div class="login-container">
+        <div class="login-box">
+            <div class="login-header">
+                <i class="fas fa-chalkboard-teacher"></i>
+                <h2>TeachTrack Ghana</h2>
+                <p>Teacher Login Required</p>
+            </div>
+            
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="teacher-email">
+                        <i class="fas fa-envelope"></i> School Email
+                    </label>
+                    <input type="email" id="teacher-email" 
+                           placeholder="yourname@school.edu.gh" 
+                           class="form-control" required>
+                    <small class="form-hint">Use your school email address</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="teacher-password">
+                        <i class="fas fa-lock"></i> Password
+                    </label>
+                    <input type="password" id="teacher-password" 
+                           placeholder="Enter password" 
+                           class="form-control" required>
+                    <small class="form-hint">Min. 6 characters</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="teacher-name">
+                        <i class="fas fa-user"></i> Teacher's Name
+                    </label>
+                    <input type="text" id="teacher-name" 
+                           placeholder="e.g., Mr. Nii Kotey"
+                           class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="teacher-school">
+                        <i class="fas fa-school"></i> School Name
+                    </label>
+                    <input type="text" id="teacher-school" 
+                           placeholder="e.g., Prempeh College"
+                           class="form-control" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-block">
+                    <i class="fas fa-sign-in-alt"></i> Login / Register
+                </button>
+                
+                <p class="login-note">
+                    <i class="fas fa-info-circle"></i>
+                    First time? Just enter your details to register.
+                    Data is stored locally on your device.
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Rest of your existing HTML -->
+<div id="main-app" style="display: none;">
+    <!-- ALL YOUR EXISTING CONTENT GOES HERE -->
+</div>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Professional Teacher Assessment Tracker for Ghanaian Educators">
+    <title>TeachTrack Ghana | Teacher Assessment System</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="https://img.icons8.com/color/96/000000/teacher.png">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <div class="logo">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <span>TeachTrack Ghana</span>
+                </div>
+                <div class="tagline">Empowering Ghanaian Educators</div>
+            </div>
+            <div class="nav-stats">
+                <div class="stat-badge">
+                    <i class="fas fa-file-alt"></i>
+                    <span id="total-assessments-count">0</span> Assessments
+                </div>
+                <div class="stat-badge">
+                    <i class="fas fa-chart-line"></i>
+                    <span id="average-grade">N/A</span> Avg Grade
+                </div>
+                <button class="btn-export" onclick="exportToCSV()">
+                    <i class="fas fa-file-export"></i> Export Data
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                      Student Assessment Tracking
+                </h1>
+                <p class="hero-subtitle">
+                    A professional tool designed specifically for Ghanaian teachers to manage, grade, and report student assessments efficiently.
+                </p>
+                <div class="feature-highlights">
+                    <div class="feature">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>Add & Manage Assessments</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-robot"></i>
+                        <span>Auto-Grading System</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-history"></i>
+                        <span>Recent Activity Tracking</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-palette"></i>
+                        <span>Visual Grade Coding</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Detailed Reports</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content Grid -->
+        <div class="content-grid">
+            <!-- Left Panel: Form -->
+            <div class="form-panel">
+                <div class="panel-header">
+                    <h2><i class="fas fa-plus-square"></i> Add New Assessment</h2>
+                    <div class="panel-subtitle">Enter student assessment details</div>
+                </div>
+                
+                <form id="assessment-form" class="assessment-form">
+                    <div class="form-section">
+                        <h3><i class="fas fa-user-graduate"></i> Student Information</h3>
+                        <div class="form-group">
+                            <label for="student-name">
+                                <i class="fas fa-user"></i> Student Full Name
+                            </label>
+                            <input type="text" id="student-name" 
+                                   placeholder="Enter student's full name" 
+                                   class="form-control" required>
+                            <div class="form-hint">Use format: Firstname Lastname</div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3><i class="fas fa-book-open"></i> Assessment Details</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="subject">
+                                    <i class="fas fa-book"></i> Subject
+                                </label>
+                                <select id="subject" class="form-control" required>
+                                    <option value="">Select Subject</option>
+                                    <option value="Mathematics">Mathematics</option>
+                                    <option value="English Language">English Language</option>
+                                    <option value="Integrated Science">Integrated Science</option>
+                                    <option value="Social Studies">Social Studies</option>
+                                    <option value="ICT">Information Technology</option>
+                                    <option value="Ghanaian Language">Ghanaian Language</option>
+                                    <option value="RME">Religious & Moral Education</option>
+                                    <option value="Creative Arts">Creative Arts</option>
+                                    <option value="French">French</option>
+                                    <option value="BDT">Basic Design & Technology</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="assessment-type">
+                                    <i class="fas fa-tasks"></i> Assessment Type
+                                </label>
+                                <select id="assessment-type" class="form-control">
+                                    <option value="Class Exercise">Class Exercise</option>
+                                    <option value="Homework">Homework</option>
+                                    <option value="Class Test">Class Test</option>
+                                    <option value="End of Term Exam">End of Term Exam</option>
+                                    <option value="Project Work">Project Work</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="score">
+                                    <i class="fas fa-check-circle"></i> Score Obtained
+                                </label>
+                                <div class="input-with-unit">
+                                    <input type="number" id="score" 
+                                           min="0" step="0.5" 
+                                           placeholder="Enter score" 
+                                           class="form-control" required>
+                                    <span class="input-unit">marks</span>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="max-score">
+                                    <i class="fas fa-star"></i> Maximum Score
+                                </label>
+                                <div class="input-with-unit">
+                                    <input type="number" id="max-score" 
+                                           min="1" step="1" 
+                                           value="100" 
+                                           class="form-control" required>
+                                    <span class="input-unit">marks</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Auto-calculated Preview -->
+                        <div class="calculation-preview" id="calculation-preview">
+                            <div class="preview-item">
+                                <span class="preview-label">Percentage:</span>
+                                <span class="preview-value" id="preview-percentage">--%</span>
+                            </div>
+                            <div class="preview-item">
+                                <span class="preview-label">Grade:</span>
+                                <span class="preview-value grade-preview" id="preview-grade">--</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3><i class="fas fa-comment-dots"></i> Additional Information</h3>
+                        <div class="form-group">
+                            <label for="comments">
+                                <i class="fas fa-sticky-note"></i> Teacher's Comments (Optional)
+                            </label>
+                            <textarea id="comments" 
+                                      placeholder="Enter comments or observations about student's performance..."
+                                      class="form-control" 
+                                      rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Form Buttons -->
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-save"></i> Save Assessment
+                        </button>
+                        <button type="button" id="clear-form" class="btn btn-secondary">
+                            <i class="fas fa-eraser"></i> Clear Form
+                        </button>
+                        <button type="button" id="quick-fill" class="btn btn-outline">
+                            <i class="fas fa-bolt"></i> Quick Fill Demo
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Quick Stats -->
+                <div class="quick-stats">
+                    <h3><i class="fas fa-chart-pie"></i> Quick Statistics</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-value" id="stat-total">0</div>
+                                <div class="stat-label">Total Assessments</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-percentage"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-value" id="stat-average">0%</div>
+                                <div class="stat-label">Class Average</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-award"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-value" id="stat-top-grade">A</div>
+                                <div class="stat-label">Top Grade</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel: Table -->
+            <div class="table-panel">
+                <div class="panel-header">
+                    <h2><i class="fas fa-history"></i> Recent Assessments</h2>
+                    <div class="panel-subtitle">Showing last 10 assessments</div>
+                    <div class="table-actions">
+                        <button class="btn btn-success" onclick="exportToCSV()">
+                            <i class="fas fa-download"></i> Export CSV
+                        </button>
+                        <button class="btn btn-info" id="refresh-table">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Grade Legend -->
+                <div class="grade-legend">
+                    <span class="legend-title">Grade Scale:</span>
+                    <span class="legend-item grade-A">A (80-100%)</span>
+                    <span class="legend-item grade-B">B (70-79%)</span>
+                    <span class="legend-item grade-C">C (60-69%)</span>
+                    <span class="legend-item grade-D">D (50-59%)</span>
+                    <span class="legend-item grade-F">F (Below 50%)</span>
+                </div>
+
+                <!-- Assessments Table -->
+                <div class="table-responsive">
+                    <table class="assessments-table">
+                        <thead>
+                            <tr>
+                                <th><i class="fas fa-user"></i> Student</th>
+                                <th><i class="fas fa-book"></i> Subject</th>
+                                <th><i class="fas fa-chart-bar"></i> Score</th>
+                                <th><i class="fas fa-graduation-cap"></i> Grade</th>
+                                <th><i class="fas fa-calendar"></i> Date</th>
+                                <th><i class="fas fa-cog"></i> Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body">
+                            <!-- Data will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Empty State -->
+                <div id="empty-state" class="empty-state">
+                    <div class="empty-icon">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <h3>No Assessments Yet</h3>
+                    <p>Start by adding your first student assessment using the form on the left.</p>
+                    <button class="btn btn-primary" onclick="document.getElementById('student-name').focus()">
+                        <i class="fas fa-plus"></i> Add First Assessment
+                    </button>
+                </div>
+
+                <!-- Report Section -->
+                <div class="report-section">
+                    <div class="report-header">
+                        <h3><i class="fas fa-file-alt"></i> Detailed Report</h3>
+                        <p>View all assessments sorted by most recent</p>
+                    </div>
+                    <div class="report-actions">
+                        <button class="btn btn-primary" id="generate-report">
+                            <i class="fas fa-chart-bar"></i> Generate Full Report
+                        </button>
+                        <button class="btn btn-outline" id="print-report">
+                            <i class="fas fa-print"></i> Print Report
+                        </button>
+                    </div>
+                    <div id="report-output" class="report-output"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4><i class="fas fa-chalkboard-teacher"></i> TeachTrack Ghana</h4>
+                    <p>Designed specifically for Ghanaian educational needs</p>
+                    <p class="footer-version">Version 1.0 | PWA Enabled | Works Offline</p>
+                </div>
+                <div class="footer-section">
+                    <h4><i class="fas fa-feather-alt"></i> Features</h4>
+                    <ul>
+                        <li>Assessment Management</li>
+                        <li>Auto-Grading System</li>
+                        <li>Offline Capability</li>
+                        <li>Data Export</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4><i class="fas fa-globe-africa"></i> For Ghana</h4>
+                    <p>Supporting Ghana's education system with technology</p>
+                    <div class="footer-tag">
+                        <i class="fas fa-heart"></i> Made with purpose for Ghana
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025TeachTrack Ghana. Designed for educational use.</p>
+                <p>Designed by Adom Asiamah samuel
+                <p class="footer-note">
+                    <i class="fas fa-lightbulb"></i> This tool helps teachers focus more on teaching, less on paperwork.
+                </p>
+            </div>
+        </footer><!-- About This App Section -->
+<section class="about-section">
+    <div class="about-container">
+        <div class="about-header">
+            <h2><i class="fas fa-info-circle"></i> About TeachTrack Ghana</h2>
+            <p class="about-subtitle">Empowering Ghanaian Teachers with Digital Assessment Tools</p>
+        </div>
+
+        <div class="about-content">
+            <!-- Mission & Vision -->
+            <div class="about-card mission-card">
+                <div class="about-icon">
+                    <i class="fas fa-bullseye"></i>
+                </div>
+                <h3>Our Mission</h3>
+                <p>To provide Ghanaian teachers with a simple, efficient, and accessible digital tool for tracking student assessments, reducing paperwork, and improving educational outcomes.</p>
+            </div>
+
+            <!-- Features Overview -->
+            <div class="about-card features-card">
+                <div class="about-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <h3>Key Features</h3>
+                <ul class="features-list">
+                    <li><i class="fas fa-check-circle"></i> <strong>Easy Assessment Management</strong> - Add, edit, and delete student assessments</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Automatic Grading</strong> - Instant percentage and grade calculation</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Visual Progress Tracking</strong> - Color-coded grades and performance bars</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Offline Capability</strong> - Works without internet connection</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Data Export</strong> - Download assessments as CSV for reports</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Mobile-Friendly</strong> - Optimized for smartphones and tablets</li>
+                </ul>
+            </div>
+
+            <!-- For Ghana -->
+            <div class="about-card ghana-card">
+                <div class="about-icon">
+                    <i class="fas fa-flag"></i>
+                </div>
+                <h3>Designed for Ghana</h3>
+                <p>This app is specifically created with Ghanaian teachers in mind:</p>
+                <div class="ghana-features">
+                    <div class="ghana-feature">
+                        <i class="fas fa-school"></i>
+                        <span>Based on Ghana's grading system</span>
+                    </div>
+                    <div class="ghana-feature">
+                        <i class="fas fa-book"></i>
+                        <span>Includes Ghanaian curriculum subjects</span>
+                    </div>
+                    <div class="ghana-feature">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>Optimized for mobile data usage</span>
+                    </div>
+                    <div class="ghana-feature">
+                        <i class="fas fa-wifi-slash"></i>
+                        <span>Works in areas with poor internet</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Developer Info -->
+            <div class="about-card developer-card">
+                <div class="about-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <h3>About the Developer</h3>
+                <p>Teach Track Ghana was created by a 16yrs old Student Of Prempeh College who is passionate about improving the quality of Education through Technology <p> 
+                <div class="developer-note">
+                    <i class="fas fa-heart"></i>
+                    <p><strong>Note:</strong> This app is completely free to use. No ads, no subscriptions, no data collection. Your assessment data stays securely on your device.</p>
+                </div>
+            </div>
+
+            <!-- How to Use -->
+            <div class="about-card usage-card">
+                <div class="about-icon">
+                    <i class="fas fa-play-circle"></i>
+                </div>
+                <h3>How to Use</h3>
+                <div class="steps">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <div class="step-content">
+                            <h4>Login/Register</h4>
+                            <p>Enter your school email to create your account</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <div class="step-content">
+                            <h4>Add Assessments</h4>
+                            <p>Fill in student details and scores</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <div class="step-content">
+                            <h4>Track Progress</h4>
+                            <p>View grades and performance in the table</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <div class="step-content">
+                            <h4>Export Reports</h4>
+                            <p>Download data for school records or parent meetings</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Support & Feedback -->
+            <div class="about-card support-card">
+                <div class="about-icon">
+                    <i class="fas fa-hands-helping"></i>
+                </div>
+                <h3>Support & Feedback</h3>
+                <p>This app is continuously improving based on teacher feedback. Your suggestions help make it better!</p>
+                
+                <div class="support-options">
+                    <a href="mailto:teachtrackghana@gmail.com" class="support-link">
+                        <i class="fas fa-envelope"></i> Email Feedback
+                    </a>
+                    <a href="https://wa.me/233XXXXXXXXX" class="support-link whatsapp-link">
+                        <i class="fab fa-whatsapp"></i> WhatsApp Suggestions
+                    </a>
+                    <button onclick="showFeatureRequest()" class="support-link">
+                        <i class="fas fa-lightbulb"></i> Request Feature
+                    </button>
+                </div>
+                
+                <div class="version-info">
+                    <p><i class="fas fa-code-branch"></i> Version 1.0 | PWA Enabled</p>
+                    <p><i class="fas fa-shield-alt"></i> Your data is stored locally on your device</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="quick-facts">
+            <h3><i class="fas fa-chart-line"></i> Quick Facts</h3>
+            <div class="facts-grid">
+                <div class="fact">
+                    <div class="fact-number" id="total-teachers">0</div>
+                    <div class="fact-label">Teachers Using</div>
+                </div>
+                <div class="fact">
+                    <div class="fact-number" id="total-assessments-display">0</div>
+                    <div class="fact-label">Assessments Tracked</div>
+                </div>
+                <div class="fact">
+                    <div class="fact-number">100%</div>
+                    <div class="fact-label">Free to Use</div>
+                </div>
+                <div class="fact">
+                    <div class="fact-number">24/7</div>
+                    <div class="fact-label">Available Offline</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Feature Request Modal -->
+<div id="featureRequestModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeFeatureRequest()">&times;</span>
+        <h3><i class="fas fa-lightbulb"></i> Request a Feature</h3>
+        <p>Help improve TeachTrack Ghana by suggesting new features!</p>
+        
+        <form id="featureRequestForm">
+            <div class="form-group">
+                <label for="featureName">Feature Name</label>
+                <input type="text" id="featureName" placeholder="e.g., Parent Report Generation" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="featureDescription">Description</label>
+                <textarea id="featureDescription" 
+                          placeholder="Describe how this feature would help you..." 
+                          rows="4" required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="userEmail">Your Email (optional)</label>
+                <input type="email" id="userEmail" placeholder="teacher@school.edu.gh">
+            </div>
+            
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-paper-plane"></i> Submit Request
+            </button>
+        </form>
+    </div>
+</div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notification-container"></div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>
